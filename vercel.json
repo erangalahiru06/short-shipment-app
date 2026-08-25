@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/auth/(.*)",
+      "dest": "/api/index.py/auth/$1"
+    },
+    {
+      "src": "/api/representatives(?:/(.*))?",
+      "dest": "/api/index.py/api/representatives/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
