@@ -14,7 +14,8 @@ from pydantic import BaseModel, Field
 
 BASE_DIR = Path(__file__).resolve().parent
 WEB_ROOT = BASE_DIR.parent
-DB_PATH = Path(os.getenv("API_DB_PATH", BASE_DIR / "shipment_api.sqlite3"))
+DEFAULT_DB_PATH = Path("/tmp/shipment_api.sqlite3") if os.getenv("VERCEL") else BASE_DIR / "shipment_api.sqlite3"
+DB_PATH = Path(os.getenv("API_DB_PATH", DEFAULT_DB_PATH))
 ADMIN_USERNAME = os.getenv("API_ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.getenv("API_ADMIN_PASSWORD", "admin123")
 
@@ -176,4 +177,5 @@ def delete_representative(representative_id: int) -> dict[str, bool]:
     return {"deleted": True}
 
 
-app.mount("/", StaticFiles(directory=WEB_ROOT, html=True), name="frontend")
+if WEB_ROOT.exists():
+    app.mount("/", StaticFiles(directory=WEB_ROOT, html=True), name="frontend")
