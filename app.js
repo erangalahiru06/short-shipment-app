@@ -1144,7 +1144,7 @@ function saveExporterName(name) {
 function refreshExporterNameLists(selectedName) {
     let names = loadExporterNames();
     document.querySelectorAll('.exporter-name-select').forEach(sel => {
-        let current = selectedName || (sel.value && sel.value !== ADD_EXPORTER_VALUE ? sel.value : 'Eranga Lahiru');
+        let current = selectedName || sel.value || 'Eranga Lahiru';
         sel.innerHTML = '';
         names.forEach(name => {
             let opt = document.createElement('option');
@@ -1152,10 +1152,6 @@ function refreshExporterNameLists(selectedName) {
             opt.textContent = name;
             sel.appendChild(opt);
         });
-        let addOpt = document.createElement('option');
-        addOpt.value = ADD_EXPORTER_VALUE;
-        addOpt.textContent = '+ Add Name';
-        sel.appendChild(addOpt);
         sel.value = names.includes(current) ? current : names[0];
     });
 }
@@ -1191,7 +1187,6 @@ async function handleExporterNameChange(e) {
 
 function initExporterNameLists() {
     refreshExporterNameLists('Eranga Lahiru');
-    document.querySelectorAll('.exporter-name-select').forEach(sel => sel.addEventListener('change', handleExporterNameChange));
 }
 
 function showRemittancePopup() {
