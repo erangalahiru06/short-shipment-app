@@ -1,0 +1,713 @@
+<!-- Change history: see CHANGELOG.md -->
+<!doctype html>
+<html lang="si">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+content="width=device-width, initial-scale=1"/>
+    <title>
+      UNIVERSAL FREIGHTERS INTERNATIONAL(PVT) LTD.
+    </title>
+    <link rel="stylesheet"
+href="styles.css"/>
+    <link rel="icon"
+href="app-icon.ico"/>
+    <link rel="apple-touch-icon"
+href="app-icon.png"/>
+  </head>
+  <body>
+    <!-- ============================================================ -->
+    <!-- APP HEADER                                                   -->
+    <!-- ============================================================ -->
+    <header class="no-print topbar app-header-v39">
+      <div class="header-spacer">
+      </div>
+      <div class="header-title-wrap">
+        <h1>
+          Short Shipment Declaration Generator
+        </h1>
+        <p>
+          Date auto. CUSDEC details සහ Quantity shipped enter කරාම Qty short shipped auto calculate වෙයි.
+        </p>
+      </div>
+      <div class="header-right">
+        <img class="header-logo"
+src="Universal.jpg"
+alt="Universal logo">
+        <button id="setPdfFolderBtn"
+type="button">
+          Set PDF Save Folder
+        </button>
+        <span id="pdfFolderStatus" class="pdf-folder-status">
+          PDF folder not set
+        </span>
+        <button id="printBtn"
+type="button">
+          Print
+        </button>
+        <button id="adminSettingsBtn"
+      type="button">
+          Admin Settings
+        </button>
+      </div>
+    </header>
+    <!-- ============================================================ -->
+    <!-- STARTUP MODALS                                                -->
+    <!-- ============================================================ -->
+    <div id="remittanceModal"
+class="modal-overlay no-print">
+      <div class="modal-card">
+        <h2>
+          Select Remittance Type
+        </h2>
+        <p>
+          Please select the Remittance Type before entering data.
+        </p>
+        <select id="modalRemittanceType">
+          <option value="remittance">
+            Remittance(Nike)
+          </option>
+          <option value="enter-dval">
+            D.Value(Active)
+          </option>
+          <option value="no-ship-invoice">
+            NO Ship Invoice(Haddad / Zelus)
+          </option>
+          <option value="non-remittance">
+            Non Remittance
+          </option>
+        </select>
+        <button id="modalStart"
+type="button">
+          Start
+        </button>
+      </div>
+    </div>
+    <div id="exporterModal"
+class="modal-overlay no-print">
+      <div class="modal-card">
+        <h2>
+          Select Exporter / Authorized Rep.
+        </h2>
+        <p>
+          Please select the Exporter / Authorized Representative before entering data.
+        </p>
+        <select id="modalExporterName"
+class="exporter-name-select">
+          <option>
+            Eranga Lahiru
+          </option>
+          <option>
+            Gihan Praboda
+          </option>
+          <option>
+            Isuru Buddhika
+          </option>
+          <option>
+            Harshana
+          </option>
+          <option>
+            Sujith Srimal
+          </option>
+          <option>
+            Thilan Fernando
+          </option>
+          <option>
+            Kasun Sachintha
+          </option>
+          <option>
+            Vimukthi
+          </option>
+          <option>
+            Lakshitha
+          </option>
+          <option>
+            Devaka Hirantha
+          </option>
+          <option value="__ADD_NAME__">
+            +Add Name
+          </option>
+        </select>
+        <button id="exporterStart"
+type="button">
+          Start
+        </button>
+      </div>
+    </div>
+    <div id="loginModal"
+class="modal-overlay no-print">
+      <div class="modal-card admin-card">
+        <h2>Authorized Login</h2>
+        <p>Enter the authorized username and password to open the settings.</p>
+        <label>Username
+          <input id="adminLoginUsername" type="text" autocomplete="username">
+        </label>
+        <label>Password
+          <input id="adminLoginPassword" type="password" autocomplete="current-password">
+        </label>
+        <div class="admin-actions">
+          <button id="adminLoginSubmit" type="button">Login</button>
+          <button id="adminLoginCancel" type="button" class="secondary-btn">Cancel</button>
+        </div>
+        <div id="loginError" class="error-box" style="display:none"></div>
+      </div>
+    </div>
+    <div id="adminModal"
+class="modal-overlay no-print">
+      <div class="modal-card admin-card">
+        <h2>Representative Settings</h2>
+        <p>Authorized users can add or update representative details.</p>
+        <label>Representative
+          <select id="adminRepresentativeSelect"></select>
+        </label>
+        <label>Name
+          <input id="adminRepName" type="text">
+        </label>
+        <label>Designation
+          <input id="adminDesignation" type="text">
+        </label>
+        <label>Enterprise
+          <input id="adminEnterprise" type="text">
+        </label>
+        <label>Signature PNG
+          <input id="adminSignature" type="file" accept="image/png">
+        </label>
+        <div class="admin-actions">
+          <button id="adminSaveBtn" type="button">Save</button>
+          <button id="adminCloseBtn" type="button" class="secondary-btn">Close</button>
+        </div>
+        <div id="adminError" class="error-box" style="display:none"></div>
+      </div>
+    </div>
+    <!-- ============================================================ -->
+    <!-- MAIN APP                                                      -->
+    <!-- ============================================================ -->
+    <main>
+      <section class="no-print card">
+      <!-- DATA ENTRY -->
+        <h2>
+          Data Entry
+        </h2>
+        <div class="grid four">
+          <label>
+            Date
+            <input id="docDate"
+type="date">
+          </label>
+          <label>
+            Invoice No.
+            <input id="invoice"
+placeholder="Optional">
+          </label>
+          <label>
+            Remittance Type
+            <select id="formType">
+              <option value="remittance">
+                Remittance(Nike)
+              </option>
+              <option value="enter-dval">
+                D.Value (Active)
+              </option>
+              <option value="no-ship-invoice">
+                NO Ship Invoice(Haddad / Zelus)
+              </option>
+              <option value="non-remittance">
+                Non Remittance
+              </option>
+            </select>
+          </label>
+          <label id="deductionLabel">
+            Remittance deduction %
+            <input id="deduction"
+type="number"
+step="0.01"
+value="1.75">
+          </label>
+          <label>
+            Enterprise
+            <input id="enterprise"
+value="MAS CAPITAL PVT LTD">
+          </label>
+          <label>
+            Exporter / Authorized Rep.
+            <select id="exporterName"
+class="exporter-name-select">
+              <option>
+                Eranga Lahiru
+              </option>
+              <option>
+                Gihan Praboda
+              </option>
+              <option>
+                Isuru Buddhika
+              </option>
+              <option>
+                Harshana
+              </option>
+              <option>
+                Sujith Srimal
+              </option>
+              <option>
+                Thilan Fernando
+              </option>
+              <option>
+                Kasun Sachintha
+              </option>
+              <option>
+                Vimukthi
+              </option>
+              <option>
+                Lakshitha
+              </option>
+              <option>
+                Devaka Hirantha
+              </option>
+              <option value="__ADD_NAME__">
+                +Add Name
+              </option>
+            </select>
+          </label>
+          <label>
+            Rep.Name
+            <select id="repName">
+              <option value="Nuwan Bandara">
+                Nuwan Bandara
+              </option>
+              <option value="Manolika Premachandra">
+                Manolika Premachandra
+              </option>
+            </select>
+          </label>
+          <label>
+            Designation
+            <input id="designation"
+value="Assistant Manager - Commercial & Logistic"
+readonly>
+          </label>
+        </div>
+        <div id="errorBox"
+class="error-box"
+style="display:none">
+        </div>
+        <div class="option-row">
+          <div class="container-enable-row">
+            <label>
+              <input id="enableContainers"
+type="checkbox">
+              Enable Container Details / Print Container Details
+            </label>
+          </div>
+          <div class="page2-print-row">
+            <label>
+              <input id="printCertPage"
+type="checkbox"
+checked>
+              Green Channel Form
+            </label>
+          </div>
+        </div>
+        <h3>
+          Container Details
+        </h3>
+        <div class="table-wrap container-wrap">
+          <table id="containerTable">
+            <thead>
+              <tr>
+                <th>
+                  Nos.
+                </th>
+                <th>
+                  Container No.
+                </th>
+                <th>
+                  CTNS
+                </th>
+                <th>
+                  PCS
+                </th>
+                <th>
+                  G.W
+                </th>
+                <th>
+                  N.W
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div class="actions container-actions">
+          <button id="addContainerRow">
+            +Add Container
+          </button>
+          <button id="removeContainerRow" class="secondary-btn">
+            - Remove Container
+          </button>
+        </div>
+        <h3>
+          Enter one line continuously like your sample
+        </h3>
+        <div class="table-wrap">
+          <table id="inputTable">
+            <thead>
+              <tr>
+                <th rowspan="2">
+                  CUSDEC No.
+                </th>
+                <th colspan="3">
+                  CUSDEC DETAILS
+                </th>
+                <th id="qtyHead"
+colspan="6">
+                  QUANTITY SHIPPED
+                </th>
+                <th colspan="2">
+                  AUTO QTY SHORT SHIPPED
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  HS
+                </th>
+                <th>
+                  CTNS
+                </th>
+                <th>
+                  PCS / DOZS
+                </th>
+                <th id="fobHeader">
+                  VALUE OF THE SHIP
+                  <br>
+                  INVOICE
+                </th>
+                <th class="dval-col">
+                  D.Value
+                </th>
+                <th>
+                  CTNS
+                </th>
+                <th>
+                  PCS / DOZS
+                </th>
+                <th>
+                  GROSS
+                  <br>
+                  WEIGHT
+                </th>
+                <th>
+                  NET
+                  <br>
+                  WEIGHT
+                </th>
+                <th>
+                  CTNS
+                </th>
+                <th>
+                  PCS / DOZS
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="2">
+                  TOTAL
+                </th>
+                <th id="inCusCtn">
+                  0
+                </th>
+                <th id="inCusPcs">
+                  0
+                </th>
+                <th id="inFob">
+                  0.00
+                </th>
+                <th id="inDval"
+class="dval-col">
+                  0.00
+                </th>
+                <th id="inShipCtn">
+                  0
+                </th>
+                <th id="inShipPcs">
+                  0
+                </th>
+                <th id="inGross">
+                  0.00
+                </th>
+                <th id="inNet">
+                  0.00
+                </th>
+                <th id="inShortCtn">
+                  0
+                </th>
+                <th id="inShortPcs">
+                  0
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div id="calculatedFobPreview"
+class="fob-preview">
+          FOB VALUE OF THE QTY SHIPPED:
+          <b id="fobPreview">
+            0.00
+          </b>
+        </div>
+        <div class="actions">
+          <button id="addRow">
+            +Add Row
+          </button>
+          <button id="removeRow" class="secondary-btn">
+            - Remove Row
+          </button>
+          <button id="sampleOne">
+            Load sample
+          </button>
+          <button id="clearRows">
+            Clear
+          </button>
+        </div>
+      </section>
+      <!-- ============================================================ -->
+      <!-- PRINT OUTPUT                                                 -->
+      <!-- ============================================================ -->
+      <section id="printArea"
+class="print-sheet">
+        <div id="printTimestamp"
+class="print-timestamp">
+        </div>
+        <div class="doc-title">
+          SHORT SHIPMENT DECLARATION
+        </div>
+        <div class="sub-title">
+          (To be filled by the Exporter or his Authorized Representative)
+        </div>
+        <div class="doc-meta">
+          <span>
+            Date:
+            <b data-out="date">
+            </b>
+          </span>
+          <span>
+            Invoice No:
+            <b data-out="invoice">
+            </b>
+          </span>
+        </div>
+        <p>
+          Please be informed that we are short shipping the under mentioned goods, details of which are shown below, against Cusdec No.E
+          <b id="firstCusdec">
+          </b>
+          .
+        </p>
+        <table class="print-table">
+          <thead>
+            <tr>
+              <th rowspan="2">
+                ITEM NO AS PER CUSDEC
+              </th>
+              <th rowspan="2">
+                HS CODE
+              </th>
+              <th colspan="2">
+                QTY SHORT SHIPPED
+              </th>
+              <th colspan="2">
+                QUANTITY SHIPPED
+              </th>
+              <th rowspan="2">
+                FOB VALUE OF THE QTY SHIPPED
+              </th>
+              <th rowspan="2">
+                GROSS WEIGHT
+              </th>
+              <th rowspan="2">
+                NET WEIGHT
+              </th>
+            </tr>
+            <tr>
+              <th>
+                CTNS
+              </th>
+              <th>
+                PCS/DOZS
+              </th>
+              <th>
+                CTNS
+              </th>
+              <th>
+                PCS / DOZS
+              </th>
+            </tr>
+          </thead>
+          <tbody id="printRows">
+          </tbody>
+          <tfoot>
+            <tr class="blank-before-total">
+              <td colspan="9">
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2">
+                GRAND TOTAL
+              </th>
+              <th id="tShortCtn">
+              </th>
+              <th id="tShortPcs">
+              </th>
+              <th id="tShipCtn">
+              </th>
+              <th id="tShipPcs">
+              </th>
+              <th id="tFob">
+              </th>
+              <th id="tGross">
+              </th>
+              <th id="tNet">
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="dval">
+          <span>
+            D.Val =
+          </span>
+          <b id="dval">
+          </b>
+        </div>
+        <div class="sign-grid page1-sign">
+          <div>
+            <span class="exporter-small"
+data-out="exporterName">
+            </span>
+            <br>
+            <span class="line">
+            </span>
+            <br>
+            <span class="exporter-label">
+              Signature of the Exporter or his Representative
+            </span>
+          </div>
+          <div>
+            <b>
+              Date:
+            </b>
+            <b data-out="date">
+            </b>
+            <br>
+            <span class="line date-bottom">
+            </span>
+          </div>
+        </div>
+        <div class="slc-block">
+          <b>
+            DD (Verification) KEPZ
+          </b>
+          <br>
+          Forwarded please
+          <div class="slc-sign-space">
+            <span class="line slc-line">
+            </span>
+            <br>
+            <b class="slc-label">
+              Signature of the SLC Officer /
+Verification officer
+            </b>
+          </div>
+        </div>
+        <!-- CERTIFICATE PAGE -->
+        <div class="page-break">
+        </div>
+        <div class="doc-title cert-heading">
+          CERTIFICATE OF CONFIRMATION OF EXPORT CARGO
+        </div>
+        <div class="cert-body-shift">
+          <p>
+            Name of the Enterprise:
+            <b data-out="enterprise">
+            </b>
+          </p>
+          <p>
+            Export Entry No.E.
+            <b id="certCusdec">
+            </b>
+          </p>
+          <p>
+            Deputy Director(Export & Services) KEPZ
+          </p>
+          <p>
+            This is to certify that the under-mentioned goods are to be shipped against the above Export Entry.
+          </p>
+          <table class="print-table small cert-cargo-table">
+            <thead>
+              <tr>
+                <th>
+                  Item No
+                </th>
+                <th>
+                  No of Ctns /
+Pkgs / Rolls
+                </th>
+                <th>
+                  Quantity Pcs /
+Kgs / Dzs
+                </th>
+                <th>
+                  GROSS
+                  <br>
+                  WEIGHT
+                </th>
+                <th>
+                  NET
+                  <br>
+                  WEIGHT
+                </th>
+              </tr>
+            </thead>
+            <tbody id="certRows">
+            </tbody>
+          </table>
+          <div class="container-line">
+            <strong>
+              Container No. / Nos.:
+            </strong>
+            <span id="containerPrint" class="container-list">
+            </span>
+          </div>
+          <div class="cert-sign-area v15-cert-sign">
+            <div class="cert-sign-title">
+              Signature of the Enterprise Representative:
+            </div>
+            <div class="cert-stamp-sig v15-stamp">
+              <img class="cert-stamp" src="MAS%20CAPITAL%20Stamp.png" alt="Company stamp">
+              <img class="cert-sig" src="Nuwan%20Bandara.png" alt="Signature">
+            </div>
+            <div class="cert-info-grid">
+              <div class="cert-info-label">
+                Name
+              </div>
+              <div class="cert-info-value" data-out="repName">
+              </div>
+              <div class="cert-info-label">
+                Designation
+              </div>
+              <div class="cert-info-value" data-out="designation">
+              </div>
+              <div class="cert-info-label">
+                Date
+              </div>
+              <div class="cert-info-value" data-out="dateLong">
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <!-- APP LOGIC -->
+      <script src="app.js">
+      </script>
+    </body>
+  </html>

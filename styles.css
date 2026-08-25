@@ -1,0 +1,1872 @@
+/* Change history: see CHANGELOG.md. Add future visual changes under a versioned section. */
+
+/* ============================================================
+  BASE LAYOUT AND SHARED CONTROLS
+  ============================================================ */
+:root {
+  --purple: #4b148c;
+  --line: #222
+}
+
+* {
+  box-sizing: border-box
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #f5f6fb;
+  color: #111
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  background: var(--purple);
+  color: #fff;
+  padding: 20px 28px
+}
+
+.topbar h1 {
+  margin: 0 0 4px
+}
+
+.topbar p {
+  margin: 0;
+  opacity: .9
+}
+
+button {
+  background: var(--purple);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer
+}
+
+.topbar button {
+  background: #fff;
+  color: var(--purple)
+}
+
+main {
+  max-width: 1260px;
+  margin: 24px auto;
+  padding: 0 16px
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 6px 25px #0001;
+  margin-bottom: 24px
+}
+
+.grid {
+  display: grid;
+  gap: 12px
+}
+
+.four {
+  grid-template-columns: repeat(4, 1fr)
+}
+
+label {
+  font-weight: 700;
+  font-size: 13px
+}
+
+input,
+select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  background: #fff
+}
+
+.table-wrap {
+  overflow: auto
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%
+}
+
+#inputTable th,
+#inputTable td {
+  border: 1px solid #222;
+  padding: 6px;
+  text-align: center;
+  white-space: nowrap
+}
+
+#inputTable th {
+  background: #f6f6f6
+}
+
+#inputTable th:nth-child(n+5) {
+  border-color: red
+}
+
+#inputTable td:nth-child(n+5):nth-child(-n+9) {
+  border-color: red
+}
+
+#inputTable input {
+  min-width: 95px;
+  border: 0;
+  margin: 0;
+  padding: 7px;
+  text-align: center;
+  font-weight: 700
+}
+
+.auto {
+  background: #f1f5ff;
+  font-weight: 800
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px
+}
+
+.print-sheet {
+  background: #fff;
+  padding: 40px;
+  box-shadow: 0 5px 20px #0001
+}
+
+.doc-title {
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+  margin: 10px 0
+}
+
+.sub-title {
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 12px
+}
+
+.doc-meta {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0
+}
+
+.print-table {
+  font-size: 12px;
+  margin: 14px 0
+}
+
+.print-table th,
+.print-table td {
+  border: 1px solid var(--line);
+  padding: 6px;
+  text-align: center
+}
+
+.print-table th {
+  font-weight: 800;
+  background: #f2f2f2
+}
+
+.dval {
+  margin: 13px 0 30px;
+  font-size: 13px
+}
+
+.sign-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 30px;
+  min-height: 110px
+}
+
+.stamp {
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  font-weight: 800;
+  font-size: 22px;
+  text-align: center;
+  padding: 24px
+}
+
+.sig-box {
+  height: 75px;
+  display: flex;
+  align-items: flex-end;
+  margin: 2px 0 6px
+}
+
+.sig-img {
+  max-height: 70px;
+  max-width: 230px;
+  object-fit: contain
+}
+
+.stamp-img-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.stamp-img {
+  max-width: 330px;
+  max-height: 150px;
+  object-fit: contain
+}
+
+.print-sign-note {
+  font-size: 11px;
+  color: #555
+}
+
+.small {
+  max-width: 700px
+}
+
+.page-break {
+  break-before: page;
+  page-break-before: always;
+  height: 30px
+}
+
+/* ============================================================
+  RESPONSIVE LAYOUT AND PRINT BASE
+  ============================================================ */
+@media print {
+  body {
+    background: #fff
+  }
+
+  .no-print {
+    display: none !important
+  }
+
+  main {
+    margin: 0;
+    max-width: none;
+    padding: 0
+  }
+
+  .print-sheet {
+    box-shadow: none;
+    padding: 16mm
+  }
+
+  .print-table th {
+    background: #fff
+  }
+
+  .page-break {
+    height: 0
+  }
+
+  @page {
+    size: A4;
+    margin: 10mm
+  }
+}
+
+@media(max-width:900px) {
+  .four {
+    grid-template-columns: 1fr
+  }
+
+  .topbar {
+    display: block
+  }
+}
+
+.page1-sign {
+  margin-top: 36px;
+  min-height: 55px
+}
+
+.exporter-small {
+  font-size: 11px;
+  font-weight: 400
+}
+
+.line {
+  display: inline-block;
+  border-bottom: 2px solid #000;
+  width: 260px;
+  height: 14px
+}
+
+.line.short {
+  width: 120px
+}
+
+.slc-block {
+  margin-top: 25px;
+  font-size: 12px
+}
+
+.cert-sign-area {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+  margin-top: 30px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.cert-labels {
+  font-size: 12px;
+  line-height: 1.75
+}
+
+.cert-lines {
+  position: relative;
+  font-size: 12px;
+  line-height: 1.15
+}
+
+.cert-lines .full {
+  width: 360px;
+  display: block;
+  margin-top: -2px
+}
+
+.date-line {
+  width: 210px;
+  display: block
+}
+
+.cert-stamp-sig {
+  position: relative;
+  height: 100px;
+  width: 360px;
+  margin-bottom: -8px
+}
+
+.cert-stamp {
+  position: absolute;
+  left: 55px;
+  top: 28px;
+  width: 265px;
+  max-height: 82px;
+  object-fit: contain
+}
+
+.cert-sig {
+  position: absolute;
+  left: 102px;
+  top: 1px;
+  width: 95px;
+  max-height: 80px;
+  object-fit: contain
+}
+
+.stamp-img-wrap {
+  display: none
+}
+
+@media print {
+  .cert-stamp {
+    width: 255px
+  }
+
+  .cert-sig {
+    width: 90px
+  }
+
+  .cert-sign-area {
+    margin-top: 22px
+  }
+
+  .exporter-small {
+    font-size: 10px
+  }
+}
+
+.date-bottom {
+  width: 260px;
+  border-bottom: 2px solid #000;
+  height: 10px
+}
+
+.container-line {
+  margin: 18px 0 16px;
+  font-size: 14px
+}
+
+.container-line .dots {
+  display: block;
+  width: 520px;
+  border-bottom: 2px dotted #000;
+  height: 16px
+}
+
+.dotline {
+  display: block;
+  border-bottom: 2px dotted #000;
+  height: 12px
+}
+
+.cert-lines .dotline.full {
+  width: 360px;
+  margin-top: 2px
+}
+
+.cert-lines .dotline.date-line {
+  width: 210px
+}
+
+.cert-stamp-sig.above-name {
+  height: 88px;
+  margin-bottom: -2px
+}
+
+.cert-stamp-sig.above-name .cert-stamp {
+  left: 52px;
+  top: 30px;
+  width: 255px
+}
+
+.cert-stamp-sig.above-name .cert-sig {
+  left: 98px;
+  top: 0;
+  width: 86px
+}
+
+@media print {
+  .container-line .dots {
+    width: 500px
+  }
+
+  .cert-stamp-sig.above-name {
+    height: 84px
+  }
+
+  .cert-stamp-sig.above-name .cert-stamp {
+    width: 245px
+  }
+
+  .cert-stamp-sig.above-name .cert-sig {
+    width: 82px
+  }
+}
+
+/* ============================================================
+  VERSIONED UI AND PRINT OVERRIDES
+  ============================================================ */
+/* v6 print layout refinements */
+.dval {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #000;
+  background: #f2f2f2;
+  padding: 6px 14px;
+  margin: 12px 0 24px;
+  font-size: 12px;
+  font-weight: 800;
+  min-width: 170px;
+  justify-content: space-between;
+  text-align: center
+}
+
+.dval span,
+.dval b {
+  font-weight: 800
+}
+
+.exporter-label {
+  font-size: 12px;
+  font-weight: 400
+}
+
+.slc-block {
+  margin-top: 26px;
+  font-size: 12px
+}
+
+.slc-sign-space {
+  margin-top: 34px;
+  min-height: 58px
+}
+
+.slc-line {
+  width: 300px
+}
+
+.slc-label {
+  font-size: 12px;
+  font-weight: 800
+}
+
+.page-break {
+  break-before: page;
+  page-break-before: always
+}
+
+.doc-title+.sub-title {
+  margin-top: 0
+}
+
+@media print {
+  .dval {
+    font-size: 14px;
+    background: #f2f2f2 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact
+  }
+
+  .slc-sign-space {
+    margin-top: 40px
+  }
+
+  .slc-line {
+    width: 310px
+  }
+
+  title {
+    display: none
+  }
+}
+
+/* v7 spacing refinements */
+.container-line {
+  margin-bottom: 34px
+}
+
+.cert-sign-area {
+  margin-top: 46px
+}
+
+.cert-stamp-sig.above-name {
+  height: 118px;
+  margin-bottom: -6px
+}
+
+.cert-stamp-sig.above-name .cert-stamp {
+  left: 50px;
+  top: 52px;
+  width: 250px
+}
+
+.cert-stamp-sig.above-name .cert-sig {
+  left: 98px;
+  top: 20px;
+  width: 84px
+}
+
+.slc-block {
+  margin-top: 38px
+}
+
+.slc-sign-space {
+  margin-top: 56px;
+  min-height: 76px
+}
+
+@media print {
+  .container-line {
+    margin-bottom: 36px
+  }
+
+  .cert-sign-area {
+    margin-top: 50px
+  }
+
+  .cert-stamp-sig.above-name {
+    height: 116px
+  }
+
+  .cert-stamp-sig.above-name .cert-stamp {
+    top: 52px;
+    width: 245px
+  }
+
+  .cert-stamp-sig.above-name .cert-sig {
+    top: 18px;
+    width: 82px
+  }
+
+  .slc-block {
+    margin-top: 44px
+  }
+
+  .slc-sign-space {
+    margin-top: 60px
+  }
+}
+
+/* v8 requested refinements */
+.wide-field {
+  grid-column: span 2
+}
+
+.weight-note {
+  align-self: end;
+  font-size: 13px;
+  background: #eef3ff;
+  border: 1px solid #b9c8ee;
+  border-radius: 8px;
+  padding: 10px;
+  color: #111
+}
+
+.error-box {
+  margin-top: 12px;
+  border: 1px solid #b00020;
+  background: #fff0f2;
+  color: #b00020;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700
+}
+
+.blank-before-total td {
+  height: 18px;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  background: #fff
+}
+
+.container-value {
+  font-weight: 700;
+  margin-left: 12px;
+  min-width: 170px;
+  border-bottom: 1px dotted #000;
+  text-align: center
+}
+
+.cert-body-shift {
+  margin-top: 96px
+}
+
+.cert-heading {
+  margin-bottom: 0
+}
+
+.slc-sign-space {
+  margin-top: 116px;
+  min-height: 96px
+}
+
+.slc-block {
+  margin-top: 54px
+}
+
+.container-line {
+  margin-bottom: 42px
+}
+
+.print-table {
+  width: 100%
+}
+
+.print-sheet {
+  overflow: visible
+}
+
+@media print {
+  main {
+    max-width: none
+  }
+
+  .print-sheet {
+    padding: 7mm !important
+  }
+
+  .print-table {
+    font-size: 13px
+  }
+
+  .print-table th,
+  .print-table td {
+    padding: 5px
+  }
+
+  .cert-body-shift {
+    margin-top: 96px
+  }
+
+  .slc-sign-space {
+    margin-top: 116px
+  }
+
+  .slc-block {
+    margin-top: 58px
+  }
+
+  .wide-field,
+  .weight-note,
+  .error-box {
+    display: none !important
+  }
+
+  @page {
+    size: A4;
+    margin: 6mm
+  }
+}
+
+@media(max-width:900px) {
+  .wide-field {
+    grid-column: span 1
+  }
+}
+
+/* v10 data-entry top fields */
+.weight-note.wide-field {
+  grid-column: span 2
+}
+
+@media print {
+
+  #overallGross,
+  #overallNet,
+  #containerNo,
+  #containerNos {
+    display: none !important
+  }
+}
+
+/* v12 multi-container table + print formatting */
+#containerTable th,
+#containerTable td {
+  border: 1px solid #222;
+  padding: 6px;
+  text-align: center;
+  white-space: nowrap
+}
+
+#containerTable th {
+  background: #f6f6f6;
+  font-weight: 800
+}
+
+#containerTable input {
+  width: 100%;
+  min-width: 150px;
+  border: 0;
+  margin: 0;
+  padding: 7px;
+  text-align: center;
+  font-weight: 700
+}
+
+.container-actions {
+  margin-top: 10px;
+  margin-bottom: 12px
+}
+
+.container-line {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 18px 0 46px;
+  line-height: 1.55
+}
+
+.container-line .dots {
+  display: none !important
+}
+
+.container-list {
+  margin-left: 10px;
+  vertical-align: top;
+  font-weight: 800;
+  display: inline-block
+}
+
+.container-list div {
+  font-weight: 800;
+  white-space: nowrap
+}
+
+@media print {
+
+  #containerTable,
+  #containerTable th,
+  #containerTable td {
+    font-size: 13px
+  }
+
+  .container-line {
+    font-size: 12px;
+    margin-bottom: 42px
+  }
+
+  .container-list div {
+    white-space: nowrap
+  }
+}
+
+/* v13 container CTNS/PCS columns */
+#containerTable input {
+  min-width: 110px
+}
+
+#containerTable th:nth-child(3),
+#containerTable th:nth-child(4) {
+  min-width: 95px
+}
+
+/* v14 certificate cargo table G.W/N.W and container Nos print rule */
+.cert-cargo-table th,
+.cert-cargo-table td {
+  font-weight: 800;
+  text-align: center
+}
+
+.cert-cargo-table th:nth-child(4),
+.cert-cargo-table th:nth-child(5) {
+  width: 78px
+}
+
+.cert-cargo-table td:nth-child(4),
+.cert-cargo-table td:nth-child(5) {
+  white-space: nowrap
+}
+
+@media print {
+  .cert-cargo-table {
+    font-size: 13px
+  }
+
+  .cert-cargo-table th,
+  .cert-cargo-table td {
+    padding: 5px
+  }
+}
+
+/* v15 certificate signature final layout */
+.container-line {
+  margin-bottom: 190px !important
+}
+
+.v15-cert-sign {
+  display: block !important;
+  max-width: 720px;
+  margin: 0 auto 0 auto !important;
+  font-size: 12px
+}
+
+.cert-sign-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+  white-space: nowrap
+}
+
+.v15-stamp {
+  position: relative;
+  height: 92px;
+  width: 360px;
+  margin: 0 0 4px 54px
+}
+
+.v15-stamp .cert-stamp {
+  position: absolute;
+  left: 25px;
+  top: 30px;
+  width: 250px;
+  max-height: 80px;
+  object-fit: contain
+}
+
+.v15-stamp .cert-sig {
+  position: absolute;
+  left: 75px;
+  top: 0;
+  width: 88px;
+  max-height: 70px;
+  object-fit: contain
+}
+
+.cert-info-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 8px 18px;
+  align-items: center;
+  margin-top: 2px;
+  max-width: 650px
+}
+
+.cert-info-label {
+  font-weight: 800;
+  text-align: left
+}
+
+.cert-info-value {
+  font-weight: 800;
+  text-align: left
+}
+
+.v15-cert-sign .dotline,
+.v15-cert-sign .line {
+  display: none !important;
+  border: 0 !important
+}
+
+@media print {
+  .container-line {
+    margin-bottom: 185px !important
+  }
+
+  .v15-cert-sign {
+    font-size: 12px
+  }
+
+  .v15-stamp {
+    height: 88px;
+    margin-left: 50px
+  }
+
+  .v15-stamp .cert-stamp {
+    width: 240px
+  }
+
+  .v15-stamp .cert-sig {
+    width: 84px
+  }
+
+  .cert-info-grid {
+    grid-template-columns: 118px 1fr
+  }
+}
+
+/* v16 container enable/remove controls */
+.container-enable-row {
+  margin: 14px 0 8px;
+  font-size: 14px;
+  font-weight: 800;
+  background: #f4f1fb;
+  border: 1px solid #d6c8ef;
+  border-radius: 8px;
+  padding: 10px 12px;
+  max-width: 520px
+}
+
+.container-enable-row input {
+  width: auto;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+  transform: scale(1.15)
+}
+
+.secondary-btn {
+  background: #6f42a5 !important
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed
+}
+
+#containerTable input:disabled {
+  background: #f2f2f2;
+  color: #777;
+  cursor: not-allowed
+}
+
+#containerTable input.auto-container-total {
+  background: #eef3ff;
+  color: #111;
+  cursor: not-allowed;
+}
+
+@media print {
+
+  .container-enable-row,
+  .secondary-btn {
+    display: none !important
+  }
+}
+
+/* v17 remove validation note and block print when errors exist */
+.weight-note {
+  display: none !important
+}
+
+@media print {
+  body.print-blocked #printArea {
+    display: none !important
+  }
+
+  body.print-blocked::before {
+    content: "PRINT BLOCKED - Please fix validation errors before printing.";
+    display: block;
+    font-size: 18px;
+    font-weight: 800;
+    color: #b00020;
+    margin: 30mm 15mm
+  }
+}
+
+/* v19 ENTER D.Val mode and startup popup */
+body:not(.enter-dval-mode) .dval-col {
+  display: none !important
+}
+
+body.enter-dval-mode #inputTable th,
+body.enter-dval-mode #inputTable td {
+  font-size: 13px
+}
+
+body.enter-dval-mode #inputTable input {
+  min-width: 92px
+}
+
+body.enter-dval-mode #inputTable [data-k="fob"],
+body.enter-dval-mode #inputTable [data-k="dval"] {
+  color: #d00000;
+  font-weight: 800
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .25);
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  border-top: 8px solid var(--purple)
+}
+
+.modal-card h2 {
+  margin: 0 0 8px;
+  color: var(--purple)
+}
+
+.modal-card p {
+  margin: 0 0 16px;
+  color: #333
+}
+
+.modal-card select {
+  font-weight: 800;
+  margin-bottom: 16px
+}
+
+.modal-card button {
+  width: 100%;
+  font-size: 15px
+}
+
+.admin-card {
+  max-width: 560px;
+  text-align: left
+}
+
+.admin-card h2,
+.admin-card p {
+  text-align: center
+}
+
+.admin-card label {
+  display: block;
+  margin-top: 12px
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px
+}
+
+.admin-actions button {
+  flex: 1
+}
+
+@media print {
+  .modal-overlay {
+    display: none !important
+  }
+}
+
+/* v20 final requested adjustments */
+body.enter-dval-mode #deductionLabel {
+  display: none !important
+}
+
+.v15-stamp .cert-stamp {
+  top: 11px !important
+}
+
+.v15-stamp .cert-sig {
+  top: 19px !important
+}
+
+@media print {
+  .v15-stamp .cert-stamp {
+    top: 11px !important
+  }
+
+  .v15-stamp .cert-sig {
+    top: 19px !important
+  }
+}
+
+/* v22 exporter startup popup */
+#exporterModal .modal-card {
+  border-top-color: #2b7a78
+}
+
+#exporterModal .modal-card h2 {
+  color: #2b7a78
+}
+
+/* v24 signature adjustment: move signature 0.25cm up and enlarge 20% */
+.v15-stamp .cert-sig {
+  top: 9px !important;
+  width: 106px !important;
+  max-height: 84px !important
+}
+
+@media print {
+  .v15-stamp .cert-sig {
+    top: 9px !important;
+    width: 101px !important;
+    max-height: 81px !important
+  }
+}
+
+/* v28 container numbering and container number validation */
+#containerTable [data-ck="nos"] {
+  background: #f2f2f2;
+  font-weight: 800;
+  cursor: not-allowed
+}
+
+#containerTable [data-ck="container"] {
+  text-transform: uppercase
+}
+
+/* v29 page 1 CUSDEC E prefix and print timestamp */
+.print-sheet {
+  position: relative
+}
+
+.print-timestamp {
+  position: absolute;
+  top: 8mm;
+  right: 10mm;
+  font-size: 9px;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: .1px
+}
+
+@media print {
+  .print-timestamp {
+    top: 6mm;
+    right: 7mm;
+    font-size: 9px
+  }
+}
+
+/* v30 row CUSDEC locking and arrow-key navigation */
+#inputTable [data-k="cusdec"].readonly-cusdec {
+  background: #f2f2f2;
+  color: #111;
+  font-weight: 800;
+  cursor: not-allowed
+}
+
+#inputTable input:focus,
+#containerTable input:focus {
+  outline: 3px solid #4b148c;
+  outline-offset: -2px;
+  background: #fff7d6
+}
+
+/* v32 no ship invoice mode */
+.fob-preview {
+  display: none;
+  margin: 10px 0 0;
+  background: #fffbea;
+  border: 1px solid #e5c34b;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #111;
+  max-width: 420px
+}
+
+body.no-ship-invoice-mode .fob-preview {
+  display: block
+}
+
+body.no-ship-invoice-mode #inputTable [data-k="fob"] {
+  color: #d00000;
+  font-weight: 800
+}
+
+@media print {
+  .fob-preview {
+    display: none !important
+  }
+}
+
+/* v33 UI polish + NO Ship Invoice D.Val rule */
+.card {
+  border: 1px solid #eee
+}
+
+.card h2 {
+  font-size: 26px;
+  margin-top: 0;
+  margin-bottom: 18px
+}
+
+.card h3 {
+  font-size: 20px;
+  margin: 18px 0 12px;
+  color: #111
+}
+
+#inputTable,
+#containerTable {
+  border: 1.5px solid #111;
+  background: #fff
+}
+
+#inputTable th,
+#containerTable th {
+  font-size: 16px;
+  background: #f7f7f7;
+  color: #111;
+  border-color: #111;
+  padding: 9px 7px;
+  line-height: 1.15
+}
+
+#inputTable td,
+#containerTable td {
+  font-size: 14px;
+  border-color: #222;
+  padding: 6px
+}
+
+#inputTable input,
+#containerTable input {
+  border-radius: 7px;
+  background: #fff;
+  font-size: 14px;
+  min-height: 32px
+}
+
+#inputTable input[type="number"],
+#containerTable input[type="number"] {
+  font-weight: 800
+}
+
+#inputTable tfoot th {
+  background: #fafafa;
+  font-size: 16px;
+  padding: 8px
+}
+
+.container-enable-row {
+  max-width: 520px;
+  background: #faf5ff;
+  border-color: #d7c2ff;
+  box-shadow: 0 1px 0 rgba(75, 20, 140, .08)
+}
+
+.actions button {
+  box-shadow: 0 3px 8px rgba(75, 20, 140, .18);
+  transition: transform .08s ease, filter .08s ease
+}
+
+.actions button:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px)
+}
+
+.fob-preview {
+  max-width: 520px;
+  border: 1.5px solid #e8b300;
+  background: linear-gradient(180deg, #fffdf2, #fff7d6);
+  color: #111;
+  box-shadow: 0 2px 8px rgba(232, 179, 0, .18);
+  border-radius: 9px;
+  padding: 11px 13px;
+  font-size: 15px
+}
+
+.fob-preview b {
+  color: #111;
+  font-size: 15px
+}
+
+body.no-ship-invoice-mode .fob-preview::after {
+  content: "  |  D.Val applies 1.75% deduction";
+  color: #7a4b00;
+  font-weight: 800
+}
+
+body.no-ship-invoice-mode #inputTable [data-k="fob"] {
+  color: #d00000;
+  background: #fff8f8 !important
+}
+
+input:read-only {
+  background: #f2f2f2 !important
+}
+
+@media print {
+  .card {
+    border: 0
+  }
+
+  .fob-preview::after {
+    content: "" !important
+  }
+}
+
+/* v34 certificate page print toggle + remove D.Val hint */
+body.no-ship-invoice-mode .fob-preview::after {
+  content: "" !important
+}
+
+.page2-print-row {
+  margin: 8px 0 8px;
+  font-size: 14px;
+  font-weight: 800;
+  background: #f4f8ff;
+  border: 1px solid #bcd3ff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  max-width: 520px;
+  box-shadow: 0 1px 0 rgba(28, 90, 160, .08)
+}
+
+.page2-print-row input {
+  width: auto;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+  transform: scale(1.15)
+}
+
+@media print {
+  .page2-print-row {
+    display: none !important
+  }
+
+  body.no-cert-page .page-break,
+  body.no-cert-page .cert-heading,
+  body.no-cert-page .cert-body-shift {
+    display: none !important
+  }
+}
+
+/* v35 checkbox alignment and label rename */
+.option-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin: 14px 0 8px;
+  max-width: 100%
+}
+
+.option-row .container-enable-row,
+.option-row .page2-print-row {
+  margin: 0;
+  flex: 1 1 420px;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  min-height: 42px
+}
+
+.option-row label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  line-height: 1.2
+}
+
+@media(max-width:900px) {
+  .option-row {
+    display: block
+  }
+
+  .option-row .container-enable-row,
+  .option-row .page2-print-row {
+    margin: 8px 0;
+    max-width: 520px
+  }
+}
+
+@media print {
+  .option-row {
+    display: none !important
+  }
+}
+
+/* v36: hide deduction for D.Value Active and Non Remittance, make all table lines black */
+#inputTable,
+#inputTable th,
+#inputTable td,
+#inputTable tfoot th,
+#inputTable tfoot td,
+#containerTable,
+#containerTable th,
+#containerTable td,
+.print-table,
+.print-table th,
+.print-table td,
+.print-table tfoot th,
+.print-table tfoot td,
+.cert-cargo-table th,
+.cert-cargo-table td {
+  border-color: #111 !important;
+}
+
+#inputTable th,
+#inputTable td,
+#inputTable tfoot th,
+#inputTable tfoot td {
+  border-top-color: #111 !important;
+  border-right-color: #111 !important;
+  border-bottom-color: #111 !important;
+  border-left-color: #111 !important;
+}
+
+body.enter-dval-mode #deductionLabel,
+body:has(#formType option[value="non-remittance"]:checked) #deductionLabel {
+  display: none !important
+}
+
+/* v37 final hard override: absolutely all input/print table rules black */
+#inputTable,
+#inputTable thead,
+#inputTable tbody,
+#inputTable tfoot,
+#inputTable tr,
+#inputTable th,
+#inputTable td,
+#inputTable th:nth-child(n),
+#inputTable td:nth-child(n),
+#inputTable th:nth-child(n+5),
+#inputTable td:nth-child(n+5),
+#inputTable td:nth-child(n+5):nth-child(-n+9),
+#inputTable tfoot th:nth-child(n),
+#inputTable tfoot td:nth-child(n),
+#containerTable,
+#containerTable tr,
+#containerTable th,
+#containerTable td,
+.print-table,
+.print-table tr,
+.print-table th,
+.print-table td,
+.cert-cargo-table th,
+.cert-cargo-table td {
+  border: 1px solid #111 !important;
+  border-color: #111 !important;
+}
+
+#inputTable {
+  border-collapse: collapse !important
+}
+
+#inputTable th,
+#inputTable td {
+  box-shadow: inset 0 0 0 0 #111 !important
+}
+
+#inputTable input,
+#containerTable input {
+  outline-color: #4b148c
+}
+
+@media print {
+
+  #inputTable th,
+  #inputTable td,
+  .print-table th,
+  .print-table td,
+  .cert-cargo-table th,
+  .cert-cargo-table td {
+    border: 1px solid #111 !important;
+    border-color: #111 !important
+  }
+}
+
+/* v38 print layout: more title spacing and D.Val box to right corner */
+.print-sheet .sub-title {
+  margin-bottom: 35mm !important
+}
+
+.print-sheet .doc-meta {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important
+}
+
+.dval {
+  margin: 13px 0 24px auto !important;
+  width: max-content !important;
+  min-width: 170px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  clear: both !important;
+}
+
+@media print {
+  .print-sheet .sub-title {
+    margin-bottom: 30mm !important
+  }
+
+  .dval {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    width: max-content !important
+  }
+}
+
+/* v39 header refresh: centered title, orange bar, hidden subtitle, logo on right */
+.app-header-v39 {
+  background: linear-gradient(90deg, #f58220, #f7941d) !important;
+  color: #fff !important;
+  display: grid !important;
+  grid-template-columns: 220px 1fr 300px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 14px 24px !important;
+  min-height: 88px !important;
+  box-shadow: 0 4px 16px rgba(245, 130, 32, .25) !important;
+}
+
+.app-header-v39 .header-title-wrap {
+  text-align: center !important
+}
+
+.app-header-v39 h1 {
+  margin: 0 !important;
+  font-size: 30px !important;
+  line-height: 1.1 !important;
+  font-weight: 800 !important;
+  letter-spacing: .2px !important;
+  text-align: center !important
+}
+
+.app-header-v39 p {
+  display: none !important
+}
+
+.app-header-v39 .header-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 14px !important
+}
+
+.app-header-v39 .header-logo {
+  height: 58px !important;
+  width: auto !important;
+  max-width: 130px !important;
+  object-fit: contain !important;
+  background: #fff !important;
+  border-radius: 8px !important;
+  padding: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .18) !important
+}
+
+.app-header-v39 #printBtn {
+  background: #fff !important;
+  color: #f58220 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .16) !important
+}
+
+@media(max-width:900px) {
+  .app-header-v39 {
+    grid-template-columns: 1fr !important;
+    text-align: center !important
+  }
+
+  .app-header-v39 .header-spacer {
+    display: none !important
+  }
+
+  .app-header-v39 .header-right {
+    justify-content: center !important
+  }
+
+  .app-header-v39 h1 {
+    font-size: 24px !important
+  }
+}
+
+/* v40 designation auto-lock */
+#designation[readonly] {
+  background: #f2f2f2 !important;
+  color: #111;
+  font-weight: 800;
+  cursor: not-allowed
+}
+
+/* v41 Rep Name proper dropdown */
+#repName {
+  font-weight: 800;
+  background: #fff
+}
+
+/* v42: absolutely hide app header/logo/title/print button from print output */
+@media print {
+
+  header,
+  .topbar,
+  .app-header-v39,
+  .header-title-wrap,
+  .header-right,
+  .header-logo,
+  #printBtn {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body>header {
+    display: none !important
+  }
+
+  main {
+    margin-top: 0 !important;
+    padding-top: 0 !important
+  }
+}
+
+/* v43: Manolika signature auto-switch and lower Green Channel page */
+@media print {
+  .cert-heading {
+    margin-top: 25mm !important;
+  }
+}
+
+.cert-sig {
+  transition: opacity .12s ease
+}
+
+/* v44 signature size and position refinements */
+.v15-stamp .cert-sig.nuwan-signature {
+  top: 9px !important;
+  width: 117px !important;
+  max-height: 92px !important
+}
+
+.v15-stamp .cert-sig.manolika-signature {
+  top: 28px !important;
+  width: 127px !important;
+  max-height: 101px !important
+}
+
+@media print {
+  .v15-stamp .cert-sig.nuwan-signature {
+    top: 9px !important;
+    width: 111px !important;
+    max-height: 89px !important
+  }
+
+  .v15-stamp .cert-sig.manolika-signature {
+    top: 28px !important;
+    width: 121px !important;
+    max-height: 97px !important
+  }
+}
+
+/* v46: reduce gap between Container No./Nos. and signature area by about 1 inch */
+@media print {
+  .container-line {
+    margin-bottom: 90px !important
+  }
+}
+
+/* v47: reduce space below Short Shipment Declaration heading by about 0.5 inch */
+.print-sheet .sub-title {
+  margin-bottom: 22mm !important
+}
+
+@media print {
+  .print-sheet .sub-title {
+    margin-bottom: 17mm !important
+  }
+}
+
+/* v48: sample D.Value + numeric input cleanup + black table text */
+#inputTable input,
+#inputTable td,
+#inputTable th,
+#inputTable tfoot th,
+#inputTable tfoot td,
+#containerTable input,
+#containerTable td,
+#containerTable th {
+  color: #000 !important;
+}
+
+body.no-ship-invoice-mode #inputTable [data-k="fob"] {
+  color: #000 !important;
+  background: #fff !important
+}
+
+.error-box,
+.error-box * {
+  color: #b00020 !important
+}
+
+/* v49 persistent exporter add-name dropdown */
+.exporter-name-select {
+  font-weight: 800;
+  background: #fff
+}
+
+.exporter-name-select option[value="__ADD_NAME__"] {
+  font-weight: 900;
+  color: #4b148c
+}
+
+/* v55 PDF folder auto-save controls */
+.pdf-folder-status {
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(0, 0, 0, .18);
+  padding: 6px 8px;
+  border-radius: 999px;
+  white-space: nowrap
+}
+
+#setPdfFolderBtn {
+  background: #fff !important;
+  color: #4b148c !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .16) !important
+}
+
+@media(max-width:900px) {
+  .pdf-folder-status {
+    display: inline-block;
+    margin: 4px auto
+  }
+}
+
+@media print {
+
+  #setPdfFolderBtn,
+  #pdfFolderStatus {
+    display: none !important
+  }
+}
+
+/* v57: Bold user-entered numbers in the print table data row */
+.print-table tbody td {
+  font-weight: 800 !important;
+}
+
+@media print {
+  .print-table tbody td {
+    font-weight: 800 !important;
+  }
+}
+
+/* v58: merged total entry boxes only in the data-entry table */
+#inputTable td.merged-entry-total {
+  vertical-align: middle;
+  background: #fff
+}
+
+#inputTable td.merged-entry-total input {
+  font-weight: 800;
+  text-align: center;
+  min-width: 105px
+}
+
+/* v59: make merged data-entry total cells visually match the Excel sample */
+#inputTable td.merge-dval-cell.merged-entry-total,
+#inputTable td.merge-gross-cell.merged-entry-total,
+#inputTable td.merge-net-cell.merged-entry-total {
+  vertical-align: middle !important;
+  text-align: center !important;
+  background: #fff !important;
+}
+
+#inputTable td.merge-dval-cell.merged-entry-total input,
+#inputTable td.merge-gross-cell.merged-entry-total input,
+#inputTable td.merge-net-cell.merged-entry-total input {
+  display: block !important;
+  width: 100% !important;
+  min-width: 95px !important;
+  margin: 0 !important;
+  padding: 7px 4px !important;
+  text-align: center !important;
+  font-weight: 800 !important;
+  background: transparent !important;
+}
+
+body.enter-dval-mode #inputTable td.merge-dval-cell.merged-entry-total input {
+  color: #d00000 !important;
+}
+
+/* v62: merged FOB VALUE OF THE CUSDEC entry box for NO Ship Invoice mode */
+#inputTable td.merge-fob-cell.merged-entry-total {
+  vertical-align: middle !important;
+  text-align: center !important;
+  background: #fff !important;
+}
+
+#inputTable td.merge-fob-cell.merged-entry-total input {
+  display: block !important;
+  width: 100% !important;
+  min-width: 120px !important;
+  margin: 0 !important;
+  padding: 7px 4px !important;
+  text-align: center !important;
+  font-weight: 800 !important;
+  background: transparent !important;
+  color: #d00000 !important;
+}
+
+/* V66 */
+.print-table thead th,
+.cert-cargo-table thead th {
+  font-weight: 400 !important;
+}
+
+.print-table tfoot th,
+.print-table tfoot td {
+  font-weight: 800 !important;
+}
