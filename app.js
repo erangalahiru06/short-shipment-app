@@ -1031,10 +1031,24 @@ function loadCachedRepresentativeRecords() {
 }
 
 function populateAdminRepresentativeSelect(records) {
-    adminRepresentativeRecords = records;
+    let recordsByName = new Map(records.map(record => [String(record.name || '').trim().toLowerCase(), record]));
+    let orderedNames = loadExporterNames();
+    let orderedRecords = orderedNames.map((name, index) => recordsByName.get(name.toLowerCase()) || {
+        id: `local:${index}`,
+        name,
+        designation: '',
+        enterprise: '',
+        signature_png: null
+    });
+    records.forEach(record => {
+        if (!orderedRecords.some(item => String(item.name).trim().toLowerCase() === String(record.name).trim().toLowerCase())) {
+            orderedRecords.push(record);
+        }
+    });
+    adminRepresentativeRecords = orderedRecords;
     let select = document.querySelector('#adminRepresentativeSelect');
     select.innerHTML = '<option value="new">+ Add New Representative</option>';
-    adminRepresentativeRecords.forEach(record => select.add(new Option(record.name, record.id)));
+    adminRepresentativeRecords.forEach(record => select.add(new Option(record.name, String(record.id))));
     select.value = 'new';
     fillAdminRepresentative(null);
 }
@@ -1076,7 +1090,7 @@ async function saveAdminRepresentative() {
     let token = await getAdminToken();
     if (!token) return;
     let select = document.querySelector('#adminRepresentativeSelect');
-    let id = select.value === 'new' ? null : Number(select.value);
+    let id = select.value === 'new' || select.value.startsWith('local:') ? null : Number(select.value);
     let payload = {
         name: document.querySelector('#adminRepName').value.trim(),
         designation: document.querySelector('#adminDesignation').value.trim(),
