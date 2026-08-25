@@ -1194,7 +1194,7 @@ function showRemittancePopup() {
     if (modal) modal.style.display = 'flex';
 }
 
-function applyModalRemittance() {
+async function applyModalRemittance() {
     let sel = document.querySelector('#modalRemittanceType');
     let form = document.querySelector('#formType');
     if (sel && form) {
@@ -1206,6 +1206,7 @@ function applyModalRemittance() {
     calc();
     let modal = document.querySelector('#remittanceModal');
     if (modal) modal.style.display = 'none';
+    await syncExporterNamesFromApi();
     let exporterModal = document.querySelector('#exporterModal');
     if (exporterModal) exporterModal.style.display = 'flex';
 }
